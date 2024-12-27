@@ -96,3 +96,26 @@ print(f"NPC Thought: {npc_thought}")
 # Generate a sentence based on dynamic vocabulary
 sentence = vocabulary.generate_sentence()
 print(f"Generated Sentence: {sentence}")
+
+
+
+
+
+
+####
+###
+####
+    def update_context(self):
+        """Adjust the context based on the emotion scale."""
+        emotion = self.state["emotion"]
+        if emotion <= 2:
+            self.state["context"] = "miserable"
+        elif emotion <= 4:
+            self.state["context"] = "sad"
+        elif emotion <= 6:
+            self.state["context"] = "neutral"
+        elif emotion <= 8:
+            self.state["context"] = "happy"
+        else:
+            self.state["context"] = "ecstatic"
+
