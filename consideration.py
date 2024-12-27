@@ -136,7 +136,7 @@ class ThoughtProcessor:
 vocabulary = DynamicVocabulary()
 vocabulary.set_vocabulary(
     contexts=["In the bustling town square", "On the battlefield", "While exploring the forest"],
-    subjects=["the NPC", "the player", "a guard"],
+    subjects=["a guard"],
     actions=["is gathering", "is fighting", "is exploring"],
     objects=["resources", "enemies", "treasures"]
 )
