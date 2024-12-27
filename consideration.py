@@ -94,6 +94,43 @@ class NPCWithEgo:
         """Generate and return an internal thought."""
         return thought_processor.generate_thought(self.state)
 
+class ThoughtProcessor:
+    def __init__(self, vocabulary):
+        self.vocabulary = vocabulary
+
+    def generate_thought(self, npc_state):
+        """Generate a thought for the NPC based on their current state."""
+        # The NPC's internal monologue focused on self-reflection and reasoning behind actions
+        if not self.vocabulary.contexts or not self.vocabulary.subjects or not self.vocabulary.actions or not self.vocabulary.objects:
+            return "I don't know what I should be doing right now."
+
+        # Extract current emotional state and context
+        emotion_rating = npc_state.get("emotion", 5)  # Default to neutral if undefined
+        context = npc_state.get("context", "neutral")
+
+        # Construct a self-reflective thought based on emotion and ego level
+        if emotion_rating <= 3:
+            thought = f"I'm feeling so helpless right now. Why am I even doing this? Is this action really worth it?"
+        elif emotion_rating <= 6:
+            thought = f"Alright, I guess this is the right thing to do, but it still feels like a waste of time. Why am I pushing myself?"
+        elif emotion_rating > 6:
+            thought = f"I’ve got this! There’s no one better than me to handle this situation. Everything I do is for a reason, and it’s going to work out."
+
+        # Modify thought based on NPC ego
+        ego_modifier = self.vocabulary.adjust_ego(npc_state.get("emotion", 5))
+        thought = self.apply_ego_to_thought(thought, ego_modifier)
+        
+        return thought
+
+    def apply_ego_to_thought(self, thought, ego_modifier):
+        """Modify internal monologue based on ego level."""
+        if ego_modifier == "superior":
+            return thought.replace("I", "I, the master of this world,").replace("this", "everything I do")
+        elif ego_modifier == "inferior":
+            return thought.replace("I", "I, who have no chance,").replace("this", "what I must do, even if I fail")
+        else:
+            return thought
+
 # Example Usage
 
 vocabulary = DynamicVocabularyWithEgo()
@@ -111,7 +148,7 @@ vocabulary.set_ego_weights({
     "neutral": {"gathering": 1.0, "fighting": 1.0, "exploring": 1.0}
 })
 
-npc = NPCWithEgo(name="Guard", state={"emotion": 5}, ego_level=9)  # Highly self-important NPC
+npc = NPCWithEgo(name="Guard", state={"emotion": 5, "context": "neutral"}, ego_level=9)  # Highly self-important NPC
 thought_processor = ThoughtProcessor(vocabulary)
 
 # Generate a thought and sentence
