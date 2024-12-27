@@ -144,7 +144,7 @@ class DynamicVocabulary:
         selected_word = random.choices(words, normalized_weights)[0]
         return selected_word
 
-    def generate_sentence(self, ego_weights, emotion_rating):
+    def generate_sentence(self, npc_ego, emotion_rating):
         """Combine dynamic vocabulary into a coherent sentence."""
         """Generate a sentence with adjusted weights based on NPC's emotional state."""
         adjusted_weights = self.apply_emotion_bias(emotion_rating)
