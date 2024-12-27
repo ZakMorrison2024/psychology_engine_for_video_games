@@ -79,7 +79,7 @@ def check_game_inputs(context, subject, action, game_variables):
         action = "rested to regain strength"
 
     # Ensure the subject is a valid character
-    valid_subjects = ["the player", "an NPC", "the merchant", "the adventurer", "a guard", "the engineer"]
+    valid_subjects = ["the merchant", "the adventurer", "a guard", "the engineer"]
     if subject not in valid_subjects:
         raise ValueError(f"Invalid subject: {subject}")
 
