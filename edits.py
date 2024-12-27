@@ -1,6 +1,4 @@
 import random
-
-
 # Word weights based on emotion, action, context, and polarity
 word_weights = {
     "emotion": {
@@ -39,9 +37,6 @@ word_weights = {
         "unlucky": -2, "lucky": 3, "unfortunate": -3, "loved": 4, "unloved": -3
     }
 }
-
-
-##### Everything below this point should be given in game and processed through this script.
 # Define placeholders for dynamic vocabulary and game contexts (This should be fed in by in-game data)
 PLACEHOLDERS = {
     "contexts": [],  # Placeholder for environment contexts
@@ -102,7 +97,6 @@ class DynamicVocabulary:
         }
         
         scaling_factor = emotion_scaling_factor.get(emotion_rating, 1.0)
-        
         # Adjust the word weights for each category based on the emotional scaling factor
         adjusted_weights = {
             "emotion": {word: weight * scaling_factor for word, weight in word_weights["emotion"].items()},
@@ -159,7 +153,7 @@ class DynamicVocabulary:
         sentence = self.apply_ego_to_sentence(sentence, ego_modifier)
       
         return sentence
-      
+
 
 class ThoughtProcessor:
     def __init__(self, vocabulary):
@@ -196,6 +190,7 @@ class ThoughtProcessor:
 
     return thought
 
+      
 class NPC:
     def __init__(self, name, state):
         self.name = name
@@ -237,6 +232,7 @@ class NPC:
         sentence, score = generate_sentence(self.state["ego"], self.state["emotion"])
         if sentence and score > 0:  # Filter undesirable or incoherent sentences
             print(sentence)
+
 
 # Example usage
 vocabulary = DynamicVocabulary()
@@ -338,13 +334,23 @@ vocabulary.set_ego_weights({
 })
 
 
-npc = NPC(name="Guard", state={"emotion": 5, "ego": 5})
-thought_processor = ThoughtProcessor(vocabulary)
+### Thins for game enviroment
+
+
+#PLACEHOLDERS = {
+# #   "contexts": [],  # Placeholder for environment contexts
+ #   "subjects": [],  # Placeholder for NPCs, players, and other characters
+#    "actions": [],   # Placeholder for actions the subjects perform
+ #   "objects": []    # Placeholder for objects or results of actions
+#}
+
+#npc = NPC(name="Guard", state={"emotion": 5, "ego": 5})
+#thought_processor = ThoughtProcessor(vocabulary)
 
 # Generate a thought
-npc_thought = npc.think(thought_processor)
-print(f"NPC Thought: {npc_thought}")
+#npc_thought = npc.think(thought_processor)
+#print(f"NPC Thought: {npc_thought}")
 
 # Generate a sentence based on dynamic vocabulary
-sentence = vocabulary.generate_sentence()
-print(f"Generated Sentence: {sentence}")
+#sentence = vocabulary.generate_sentence()
+#print(f"Generated Sentence: {sentence}")
