@@ -107,6 +107,18 @@ class DynamicVocabulary:
         
         return adjusted_weights
 
+    def adjust_bias_for_emotion(emotion_rating):
+    """Adjust the bias dynamically based on the emotional rating (1-10 scale)."""
+    # Emotional state determines the bias adjustment for different categories
+    bias = {
+        "emotion": 1.0 + 0.2 * (emotion_rating - 5),  # Neutral is 1.0, positive emotions increase, negative decrease
+        "action": 1.0 + 0.1 * (emotion_rating - 5),   # Neutral is 1.0, positive actions are more likely with higher emotions
+        "polarity": 1.0 + 0.1 * (emotion_rating - 5),  # Neutral is 1.0, more positive with higher emotions
+        "context": 1.0 + 0.2 * (emotion_rating - 5)    # Neutral is 1.0, more positive context with higher emotions
+    }
+    
+    return bias
+
     def adjust_ego(self, npc_ego):
         """Adjust weights based on ego level."""
         if npc_ego > 7:
@@ -125,6 +137,28 @@ class DynamicVocabulary:
         else:
             return sentence
 
+    def calculate_sentence_score(sentence, emotion_rating):
+    """Calculate the total score of a sentence based on word weights and emotion-based bias."""
+    # Adjust weights based on emotional state (1-10 scale)
+    adjusted_weights = adjust_word_weights_based_on_emotion(emotion_rating)
+    
+    # Adjust bias for the sentence based on emotional state
+    bias = adjust_bias_for_emotion(emotion_rating)
+    
+    score = 0
+    # Tokenize sentence into words (simplified for demonstration)
+    words = sentence.lower().split()
+    
+    # Apply word weights and biases to calculate score
+    for word in words:
+        for category in adjusted_weights:
+            if word in adjusted_weights[category]:
+                word_weight = adjusted_weights[category][word]
+                adjusted_weight = word_weight * bias[category]  # Apply bias to weight
+                score += adjusted_weight
+                
+    return score
+        
     def generate_weighted_word(self, category, adjusted_weights):
         """Generate a word based on adjusted weights for a given category."""
         words = list(adjusted_weights[category].keys())
@@ -233,8 +267,50 @@ class NPC:
         if sentence and score > 0:  # Filter undesirable or incoherent sentences
             print(sentence)
 
+    def action_chance(self, action, context, npc_state):
+        """
+        Determine if an action occurs based on a chance likelihood (0-100%),
+        influenced by the game's context (positive or negative).
+        :param action: The action to be performed (e.g., "shoot", "help").
+        :param context: The context of the action (e.g., "positive" or "negative").
+        :param npc_state: The NPC's current state (to factor in emotion).
+        :return: True if the action occurs, False otherwise.
+        """
+        if not (0 <= context <= 100):
+            raise ValueError("Context must be 'positive' or 'negative'.")
 
-# Example usage
+        # Base likelihood (from game logic, typically a percentage)
+        base_likelihood = random.randint(1, 100)
+
+        # Modify likelihood based on the NPC's emotional state
+        emotion_rating = npc_state.get("emotion", 5)  # Default to neutral if undefined
+
+        # Adjust likelihood based on the emotion rating
+        if emotion_rating <= 4 and emotion_rating > 2:  # Miserable or Sad -> less likely to take action
+            modifier = -10
+        elif emotion_rating <= 2: 
+            modifier = -25
+        elif emotion_rating >= 6 and emotion_rating < 8:  # Happy or Ecstatic -> more likely to take action
+            modifier = 10
+        elif emotion_rating >= 8:  
+            modifier = 25
+        else:  # Neutral -> no change
+            modifier = 0
+
+        # Increase or decrease based on the context of the action
+        if context == "negative":
+            modifier -= 10  # Negative context (e.g., attacking) reduces likelihood
+        elif context == "positive":
+            modifier += 10  # Positive context (e.g., helping) increases likelihood
+
+        # Calculate final likelihood (clamped between 0 and 100)
+        final_likelihood = max(0, min(100, base_likelihood + modifier))
+
+        # Decide whether the action occurs based on the final likelihood
+        action_occurred = base_likelihood <= final_likelihood
+        return action_occurred
+
+
 vocabulary = DynamicVocabulary()
 vocabulary.set_vocabulary(
 contexts = [
