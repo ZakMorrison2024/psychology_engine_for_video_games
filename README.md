@@ -15,6 +15,7 @@ pfft its meant to be a lightweight speech engine with a few extra gimmicks, lets
 - Realistic character speech synthesis based on psychological states.
 - Dynamic behavior prediction using advanced probability algorithms.
 - Thought processing that can be tied to characters' decisions and actions.
+- Personaility types
 
 ## Future Additions
 
