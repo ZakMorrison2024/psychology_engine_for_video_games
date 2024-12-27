@@ -106,4 +106,3 @@ print(f"NPC Thought: {npc_thought}")
 # Generate a sentence based on dynamic vocabulary
 sentence = vocabulary.generate_sentence()
 print(f"Generated Sentence: {sentence}")
-
