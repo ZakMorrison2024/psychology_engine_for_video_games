@@ -31,6 +31,3 @@ The **Psychology Engine for Video Games** is a comprehensive tool designed to br
 - [ ] Implement dynamic adjusting of character behavior based on in-game events.
 - [ ] Improve thought engine to handle long-term character development and evolution.
 
-## Installation
-
-To get started, clone the repository and install the required dependencies:
