@@ -1,6 +1,6 @@
 import random
 
-class DynamicVocabularyWithEgo:
+class DynamicVocabulary:
     def __init__(self):
         self.contexts = []  # Game-defined contexts
         self.subjects = []  # Game-defined subjects
@@ -58,7 +58,7 @@ class DynamicVocabularyWithEgo:
             return sentence
 
 
-class NPCWithEgo:
+class NPC:
     def __init__(self, name, state, ego_level):
         self.name = name
         self.state = state  # A dictionary defining emotional and contextual state
@@ -133,7 +133,7 @@ class ThoughtProcessor:
 
 # Example Usage
 
-vocabulary = DynamicVocabularyWithEgo()
+vocabulary = DynamicVocabulary()
 vocabulary.set_vocabulary(
     contexts=["In the bustling town square", "On the battlefield", "While exploring the forest"],
     subjects=["the NPC", "the player", "a guard"],
@@ -148,7 +148,7 @@ vocabulary.set_ego_weights({
     "neutral": {"gathering": 1.0, "fighting": 1.0, "exploring": 1.0}
 })
 
-npc = NPCWithEgo(name="Guard", state={"emotion": 5, "context": "neutral"}, ego_level=9)  # Highly self-important NPC
+npc = NPC(name="Guard", state={"emotion": 5, "context": "neutral"}, ego_level=9)  # Highly self-important NPC
 thought_processor = ThoughtProcessor(vocabulary)
 
 # Generate a thought and sentence
