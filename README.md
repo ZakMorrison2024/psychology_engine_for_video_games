@@ -5,7 +5,7 @@ The **Psychology Engine for Video Games** is a comprehensive tool designed to br
 - **Speech Engine**: Generates realistic dialogue and speech patterns based on character ego/emotional states.
 - **Behaviour Probability Engine**: Determines and predicts character actions and responses based on psychological profiles and environmental factors.
 - **Thought Engine**: Simulates the inner thoughts of characters, providing deeper insight into their motivations and reactions.
-- **Very Basic "Memory**: Remembers a few events.
+- **Very Basic "Memory"**: Remembers a few events.
 
 ## Features
 
