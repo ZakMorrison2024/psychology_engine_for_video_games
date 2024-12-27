@@ -17,10 +17,14 @@
         emotion_rating = npc_state.get("emotion", 5)  # Default to neutral if undefined
 
         # Adjust likelihood based on the emotion rating
-        if emotion_rating <= 2:  # Miserable or Sad -> less likely to take action
+        if emotion_rating <= 4 and emotion_rating > 2:  # Miserable or Sad -> less likely to take action
             modifier = -10
-        elif emotion_rating >= 8:  # Happy or Ecstatic -> more likely to take action
+        elif emotion_rating <= 2: 
+            modifier = -25
+        elif emotion_rating >= 6 and emotion_rating < 8:  # Happy or Ecstatic -> more likely to take action
             modifier = 10
+        elif emotion_rating >= 8:  
+            modifier = 25
         else:  # Neutral -> no change
             modifier = 0
 
