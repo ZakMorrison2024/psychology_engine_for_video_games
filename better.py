@@ -65,13 +65,23 @@ class NPC:
             self.interaction_history.pop(0)
 
     def update_emotion(self):
-        """Simple emotion update based on interaction history."""
-        if "helped" in self.interaction_history:
-            self.state["emotion"] = "happy"
-        elif "hurt" in self.interaction_history:
-            self.state["emotion"] = "angry"
-        else:
-            self.state["emotion"] = "neutral"
+        """Update the NPC's emotion based on interaction history and buzzwords."""
+        # Define buzzwords for adjusting emotion
+        positive_buzzwords = {"helped", "saved", "kind", "loved", "praised", "gifted"}
+        negative_buzzwords = {"hurt", "ignored", "mocked", "stolen", "attacked", "lied"}
+
+        # Base emotion starts at neutral (5 on a 1-10 scale)
+        emotion_rating = 5
+
+        # Adjust emotion based on buzzwords in interaction history
+        for word in self.interaction_history:
+            if word in positive_buzzwords:
+                emotion_rating += 1
+            elif word in negative_buzzwords:
+                emotion_rating -= 1
+
+        # Clamp emotion rating between 1 and 10
+        self.state["emotion"] = max(1, min(10, emotion_rating))
 
     def think(self, thought_processor):
         """Generate and return an internal thought."""
@@ -96,26 +106,4 @@ print(f"NPC Thought: {npc_thought}")
 # Generate a sentence based on dynamic vocabulary
 sentence = vocabulary.generate_sentence()
 print(f"Generated Sentence: {sentence}")
-
-
-
-
-
-
-####
-###
-####
-    def update_context(self):
-        """Adjust the context based on the emotion scale."""
-        emotion = self.state["emotion"]
-        if emotion <= 2:
-            self.state["context"] = "miserable"
-        elif emotion <= 4:
-            self.state["context"] = "sad"
-        elif emotion <= 6:
-            self.state["context"] = "neutral"
-        elif emotion <= 8:
-            self.state["context"] = "happy"
-        else:
-            self.state["context"] = "ecstatic"
 
