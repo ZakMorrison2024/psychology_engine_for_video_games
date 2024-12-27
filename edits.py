@@ -58,7 +58,6 @@ class DynamicVocabulary:
         self.objects = []  # Placeholder for game-defined objects
         self.ego_weights = {}  # For ego-related weights
 
-
     def set_vocabulary(self, contexts=None, subjects=None, actions=None, objects=None):
         """Set or update the dynamic vocabulary."""
         if contexts is not None:
@@ -70,10 +69,10 @@ class DynamicVocabulary:
         if objects is not None:
             self.objects = objects
 
-      context.append(PLACEHOLDERS["contexts"]) 
-      subjects.append(PLACEHOLDERS["subjects"])
-      actions.append(PLACEHOLDERS["actions"]) 
-      objects.append(PLACEHOLDERS["objects"])
+        context.append(PLACEHOLDERS["contexts"]) 
+        subjects.append(PLACEHOLDERS["subjects"])
+        actions.append(PLACEHOLDERS["actions"]) 
+        objects.append(PLACEHOLDERS["objects"])
 
     def set_ego_weights(self, ego_weights):
         """Set ego-related weights to influence NPC's language."""
@@ -118,7 +117,7 @@ class DynamicVocabulary:
         """Adjust weights based on ego level."""
         if npc_ego > 7:
             return "superior"  # Confident, self-important
-        elif npc_ego < 4:
+        elif npc_ego < 3:
             return "inferior"  # Self-doubt, less assertive
         else:
             return "neutral"  # Balanced ego, not extreme in any direction
@@ -148,23 +147,15 @@ class DynamicVocabulary:
     def generate_sentence(self, ego_weights, emotion_rating):
         """Combine dynamic vocabulary into a coherent sentence."""
         """Generate a sentence with adjusted weights based on NPC's emotional state."""
-        
-      
-
         adjusted_weights = self.apply_emotion_bias(emotion_rating)
-        
+        ego_modifier = self.adjust_ego(npc_ego)
         # Select words from each category based on the adjusted weights or fallback to random choice
         context = self.generate_weighted_word("context", adjusted_weights) if self.contexts else random.choice(self.contexts) if self.contexts else "In an undefined context"
         subject = self.generate_weighted_word("emotion", adjusted_weights) if self.subjects else random.choice(self.subjects) if self.subjects else "someone"
         action = self.generate_weighted_word("action", adjusted_weights) if self.actions else random.choice(self.actions) if self.actions else "does something"
         obj = self.generate_weighted_word("polarity", adjusted_weights) if self.objects else random.choice(self.objects) if self.objects else "somewhere"
-
-
-          # Adjust for ego-based behavior
+        # Gen
         sentence = f"{context}, {subject} {action} {obj}."
-      
-        # Modify sentence based on NPC ego
-        ego_modifier = self.adjust_ego(npc_ego)
         sentence = self.apply_ego_to_sentence(sentence, ego_modifier)
       
         return sentence
