@@ -1,6 +1,6 @@
 # Psychology Engine for Video Games
 
-The **Psychology Engine for Video Games** is a comprehensive tool designed to bring psychological realism to in-game characters. This engine includes the following components:
+The **Psychology Engine for Video Games** is a "comprehensive" tool designed to bring psychological realism to in-game characters. This engine includes the following components:
 
 
 pfft its meant to be a lightweight speech engine with a few extra gimmicks, lets be real :L
